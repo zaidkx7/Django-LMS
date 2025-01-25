@@ -1,0 +1,35 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Grade Submission{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 style="text-align: center;"><strong>Grade Submission</strong></h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="marks">Marks</label>
+                            <input type="number" class="form-control" id="marks" name="marks" max="10" min="0" required>
+                        </div>
+                        <button type="submit" class="cstm-btn" style="width: 100%; border-radius: 5px;">Grade</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

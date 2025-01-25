@@ -1,0 +1,76 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Overall Rank{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 style="font-weight: bold; text-align: center; margin-top: 20px;"><i class="fa-solid fa-ranking-star"></i> Overall Ranking</h1>
+    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead style="border-top: 3px solid black;">
+            <tr>
+                <th>Rank</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Marks</th>
+                <th style="text-align: center;">Total Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in rankings %}
+            <tr>
+                {% if user.student__id == request.user.id %}
+                    {% if user.rank == 1 %}
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.rank }} <i class="fa-solid fa-trophy"></i></td>
+                    {% elif user.rank == 2 or user.rank == 3 %}
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.rank }} <i class="fa-solid fa-medal"></i></td>
+                    {% else %}
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.rank }}</td>
+                    {% endif %}
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.student__username }}</td>
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.first_name }} {{ user.last_name }}</td>
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;">{{ user.total_marks }}</td>
+                        <td style="
+                        background-color: #28282B;
+                        color: #fff;
+                        text-align: center;">{{ user.total_possible_marks }}</td>
+                {% else %}
+                    {% if user.rank == 1 %}
+                        <td>{{ user.rank }} <i class="fa-solid fa-trophy"></i></td>
+                    {% elif user.rank == 2 or user.rank == 3 %}
+                        <td>{{ user.rank }} <i class="fa-solid fa-medal"></i></td>
+                    {% else %}
+                        <td>{{ user.rank }}</td>
+                    {% endif %}
+                    <td>{{ user.student__username }}</td>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.total_marks }}</td>
+                    <td style="text-align: center;">{{ user.total_possible_marks }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

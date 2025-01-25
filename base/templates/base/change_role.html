@@ -1,0 +1,29 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Change Role{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Change Role</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select class="form-control" id="role" name="role">
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+                <option value="super_user">Super User</option>
+            </select>
+        </div>
+        <button type="submit" class="sub-label" style="padding: 0px; text-align: center; width: 120px; margin-left: 15px; margin-top: 5px;"><i class="fa-solid fa-user-shield"></i> Change Role</button>
+    </form>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

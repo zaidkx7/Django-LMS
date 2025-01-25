@@ -1,0 +1,121 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Quizzes{% endblock %}
+{% block content %}
+<div class="quiz-main-container">
+    <div id="course-container" class="quiz-main-container-box">
+        <h3 class="quiz-title"><strong>Course ID: </strong>{{course.course_no}}</h3>
+        <h3 class="quiz-title"><strong>Course Title: </strong>{{course.course_title}}</h3>
+    </div>
+    <div id="quiz-container" class="quiz-main-container-box">
+        <h3 class="quiz-title-2"><strong>Quizzes</strong></h3>
+        <div class="table-responsive">
+            <table style="vertical-align: middle" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th width="4%"><strong>Quiz No</strong></th>
+                        <th width="12%"><strong>Title</strong></th>
+                        <th width="50%"><strong>Description</strong></th>
+                        <th width="10%"><strong>Help File</strong></th>
+                        <th width="3%"><strong>Allow File Upload</strong></th>
+                        <th width="7%"><strong>Date Added</strong></th>
+                        <th width="7%"><strong>Last Date</strong></th>
+                        <th width="15%"><strong>Upload</strong></th>
+                        {% if request.user.is_staff or request.user.is_superuser%}
+                        <th width="15%"><strong>Action</strong></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quiz in quizzes %}
+                    <tr>
+                        <td class="m">{{forloop.counter}}</td>
+                        <td class="m">{{quiz.quiz_title}}</td>
+                        <td class="m">
+                            {{quiz.description | safe}}
+                        </td>
+                        <td class="m" style="text-align: center;">
+                            {% if quiz.help_file %}
+                            <a href="{{quiz.help_file.url}}" target="_blank" class="success-label" download>Download</a>
+                            {% endif %}
+                        </td>
+                        <td class="m">
+                            <span class="success-label" style="text-align: center;"><i class="fa fa-check"></i> Yes</span>
+                        </td>
+                        <td class="m" width="10%">
+                            {{quiz.quiz_created_at | date:"d-F-Y"}}
+                        </td>
+                        <td class="m" width="10%">
+                            {{quiz.due_date | date:"d-F-Y"}}
+                        </td>
+                        <td class="m" width="15%" style="text-align: center;">
+                            {% if quiz.id in submitted_quizzes %}
+                            <span class="success-label"><i class="fa fa-check"></i> Uploaded</span><br><br>
+                            {% for submission in submissions %}
+                            {% if submission.quiz.id == quiz.id %}
+                            <a href="{{ submission.file.url }}" download>
+                                <button type="submit" class="btn btn-xs"
+                                    style="padding: 0px 10px 0px 10px; margin-bottom: 5px; background-color: #119247; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-download"></i> Download</button>
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                            {% if quiz.due_date > now %}
+                            <a href="{% url 'submit_quiz' quiz.id %}">
+                                <button type="submit" class="btn btn-xs"
+                                    style="padding: 0px 10px 0px 10px; background-color: #c99f14fb; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-upload"></i> Update</button>
+                            </a>
+                            {% else %}
+                            <span class="sub-danger-label"><i class="fa fa-times"></i> Closed</span>
+                            {% endif %}
+                            {% else %}
+                            {% if quiz.due_date > now %}
+                            <a href="{% url 'submit_quiz' quiz.id %}">
+                                <button type="submit" class="btn btn-xs"
+                                    style="padding: 0px 10px 0px 10px; background-color: #119247; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-upload"></i> Upload</button>
+                            </a>
+                            {% else %}
+                            <span class="sub-danger-label"><i class="fa fa-times"></i> Closed</span>
+                            {% endif %}
+                            {% endif %}
+                        </td>
+                        <td class="m" width="15%" style="text-align: center;">
+                            {% if request.user.is_staff or request.user.is_superuser or quiz.due_date <= now %}
+                            <a href="{% url 'view_quiz_submissions' quiz.id %}">
+                                <button type="submit" class="btn btn-xs"
+                                    style="padding: 0px 10px 0px 10px; background-color: #119247; margin-bottom: 5px; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-eye"></i> View</button>
+                            </a>
+                            {% endif %}
+                            {% if request.user.is_staff or request.user.is_superuser %}
+                            <a href="{% url 'edit_quiz' quiz.id %}">
+                                <button type="submit" class="btn btn-xs"
+                                    style="padding: 0px 10px 0px 10px; background-color: #bdba08; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-edit"></i> Edit</button>
+                            </a>
+                            <a href="{% url 'delete_quiz' quiz.id %}">
+                                <button type="submit" class="btn btn-xs"
+                                    style="margin-top: 5px; padding: 0px 10px 0px 10px; background-color: #ab0a0a; color: white; font-size: small; white-space: nowrap;"><i
+                                        class="fa fa-trash"></i> Delete</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

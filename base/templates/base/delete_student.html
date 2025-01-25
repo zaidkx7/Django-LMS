@@ -1,0 +1,23 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Delete Student{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Delete Student</h1>
+    <p>Are you sure you want to delete {{ student.first_name }} {{ student.last_name }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="sub-danger-label" style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i class="fa-solid fa-trash-can"></i> Delete</button>
+        <a href="{% url 'registered_students' %}"><button type="button" style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;" class="sub-label"><i class="fa-solid fa-xmark"></i> Cancel</button></a>
+    </form>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

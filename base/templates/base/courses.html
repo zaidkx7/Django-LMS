@@ -1,0 +1,71 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %} Courses {% endblock %}
+{% block content %}
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+<div class="quiz-main-container" style="height: 88vh;">
+    <div id="quiz-container" class="quiz-main-container-box">
+        <h3 class="quiz-title-2"><strong>Courses</strong></h3>
+        <div class="table-responsive">
+            <table id="course-table" style="vertical-align: middle; min-width: 100%;"
+                class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th width="4%"><strong>Course ID</strong></th>
+                    <th width="12%"><strong>Course Title</strong></th>
+                    {% if user.is_staff %}
+                    <th width="2%" style="text-align: center;"><strong>Action</strong></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td class="m">{{course.course_no}}</td>
+                    <td class="m"><a href="{% url 'quizzes' course.id %}">{{course.course_title}}</a></td>
+                    {% if user.is_staff %}
+                    <td class="m" style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <a href="{% url 'delete_course' course.id %}">
+                            <button class="sub-danger-label" style="padding: 0px; width: 100px; margin-top: 5px;">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </button>
+                        </a>
+                        <a href="{% url 'edit_course' course.id %}">
+                            <button class="sub-label" style="padding: 0px; width: 100px; margin-top: 5px;">
+                                <i class="fa-solid fa-user-edit"></i> Edit
+                            </button>
+                        </a>
+                        <a href="{% url 'view_submissions' course.id %}">
+                            <button class="sub-label" style="padding: 0px; width: 100px; margin-top: 5px;">
+                                <i class="fa fa-eye"></i> View
+                            </button>
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

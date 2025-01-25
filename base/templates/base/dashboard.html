@@ -1,0 +1,74 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<style>
+    body {
+        font-size: small;
+    }
+</style>
+<div class="main-container">
+    <div class="dashboard-title-container">
+        <h3><strong>DASHBOARD</strong></h3>
+    </div>
+    <div class="main-container-box" id="box1">
+        {% if user.studentprofile.gender == 'Female' %}
+        <img src="{% static 'images/fmale.png' %}" alt="female" class="profile-pic">
+        {% else %}
+        <img src="{% static 'images/male.png' %}" alt="male" class="profile-pic">
+        {% endif %}
+        <h4 class="profile-name"><strong>{{user.first_name | upper}} {{user.last_name | upper}}</strong></h4>
+        <h4 class="profile-id"><strong>{{user.username | upper}}</strong></h4>
+    </div>
+    <div class="main-container-box" id="box2">
+        <div class="table-responsive">
+            <table class="table table-bordered md">
+                <thead>
+                <tr>
+                    <th rowspan="2" width="15%">Course ID</th>
+                    <th rowspan="2" width="40%">Title</th>
+                    <th rowspan="2" width="15%">Submissions</th>
+                    <th rowspan="2" width="15%">Quiz Submitted</th>
+                    <th rowspan="2" width="15%">Marks</th>
+                    <th rowspan="2" width="15%">Total Quizzes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{course.course_no}}</td>
+                    <td>{{course.course_title}}</td>
+                    <td><a href="{% url 'quizzes' course.id %}"><input type="button" name="view" value="View Quizzes"
+                        class="cstm-dead-btn view-deadline-btn"></a>
+                    </td>
+                    <td class="text-center">
+                        <span class="sub-label">{{ submission_counts|get_item:course.id|default:0 }} Submitted</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="sub-label">{{ marks_sums|get_item:course.id|default:0 }} Marks</span>
+                    </td>
+                    <td class="text-center">
+                        {% if course.quiz_set.count > 1 %}
+                        <span class="total-label" id="quizzes-label">{{course.quiz_set.count}} Quizzes</span><br><br>
+                        {% else %}
+                        <span class="total-label" id="quizzes-label">{{course.quiz_set.count}} Quiz</span><br><br>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

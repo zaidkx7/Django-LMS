@@ -1,0 +1,45 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container-box">
+        <div class="box">
+            <div class="cstm-logo-container">
+                <img src="{% static 'images/lms_logo.png' %}" class="cstm-logo">
+                {% if messages %}
+                {% for message in messages %}
+                <p class="red_alert">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="input-icon">
+                <input type="text" name="reg_no" placeholder="Registration Number" class="input-field">
+                <img src="{% static 'images/lock.png' %}" class="icon">
+            </div>
+
+            <div class="input-icon">
+                <input type="password" name="password" placeholder="Password" id="password_field" class="input-field">
+                <img src="{% static 'images/hide.png' %}" class="icon" id="hide_icon">
+            </div>
+            <button class="cstm-btn">Login</button>
+            <p class="footer-text">For any issues contact &nbsp;<a id="footer-link" href="https://zaidkx7.github.io/"
+                    target="_blank">&nbsp;<strong>Muhammad Zaid</strong></a></p>
+        </div>
+    </div>
+</form>
+<script>
+    let hide = document.querySelector('#hide_icon');
+    hide.addEventListener('click', () => {
+        let password = document.querySelector('#password_field');
+        if (password.type === 'password') {
+            password.type = 'text';
+            hide.src = "{% static 'images/hide.png' %}";
+        } else {
+            password.type = 'password';
+            hide.src = "{% static 'images/show.png' %}";
+        }
+    });
+</script>
+{% endblock %}

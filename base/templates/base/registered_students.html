@@ -1,0 +1,141 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Registered Students{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'register_student' %}"><button id="register-student-btn" class="sub-label"
+            style="left: 86%; position: relative; margin-bottom: 10px; margin-top: 10px;"><i
+                class="fa-solid fa-user-plus"></i> Register Student</button></a>
+    <h1>Registered Students</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Registration Number</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    {% if request.user.is_superuser %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.first_name }} {{ student.last_name }}</td>
+                    <td>{{ student.studentprofile.gender }}</td>
+                    {% if request.user.is_superuser %}
+                    <td>
+                        <a href="{% url 'edit_student' student.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-edit"></i> Edit</button></a>
+                        <a href="{% url 'delete_student' student.id %}"><button class="sub-danger-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-trash-can"></i> Delete</button></a>
+                        <a href="{% url 'change_role' student.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-shield"></i> Role</button></a>
+                        {% if student.studentprofile.active_status %}
+                        <a href="{% url 'suspend_user' student.id %}"><button class="sub-danger-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-slash"></i> Suspend</button></a>
+                        {% else %}
+                        <a href="{% url 'suspend_user' student.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-check"></i> Activate</button></a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <h1>Staff Members</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Registration Number</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    {% if request.user.is_superuser %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staff %}
+                <tr>
+                    <td>{{ staff.username }}</td>
+                    <td>{{ staff.first_name }} {{ staff.last_name }}</td>
+                    <td>{{ staff.studentprofile.gender }}</td>
+                    {% if request.user.is_superuser %}
+                    <td>
+                        <a href="{% url 'edit_student' staff.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-edit"></i> Edit</button></a>
+                        <a href="{% url 'delete_student' staff.id %}"><button class="sub-danger-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-trash-can"></i> Delete</button></a>
+                        <a href="{% url 'change_role' staff.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-shield"></i> Role</button></a>
+                        {% if staff.studentprofile.active_status %}
+                        <a href="{% url 'suspend_user' staff.id %}"><button class="sub-danger-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-slash"></i> Suspend</button></a>
+                        {% else %}
+                        <a href="{% url 'suspend_user' staff.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-check"></i> Activate</button></a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <h1>Super Users</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Registration Number</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    {% if request.user.is_superuser and request.user.username == '14717' %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for super_user in super_users %}
+                <tr>
+                    <td>{{ super_user.username }}</td>
+                    <td>{{ super_user.first_name }} {{ super_user.last_name }}</td>
+                    <td>{{ super_user.studentprofile.gender }}</td>
+                    {% if request.user.is_superuser and request.user.username == '14717' %}
+                    <td>
+                        <a href="{% url 'change_role' super_user.id %}"><button class="sub-label"
+                                style="padding: 0px; text-align: center; width: 100px; margin-top: 5px;"><i
+                                    class="fa-solid fa-user-shield"></i> Role</button></a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+        <div class="popup-message {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}View Complaints{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Complaints</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Student ID</th>
+                <th>Complaint</th>
+                <th>Submitted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.student.first_name }} {{ complaint.student.last_name }}</td>
+                <td>{{ complaint.student.username }}</td>
+                <td>{{ complaint.complaint | safe }}</td>
+                <td>{{ complaint.submitted_at }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

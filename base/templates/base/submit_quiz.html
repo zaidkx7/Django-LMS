@@ -1,0 +1,37 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Submit Quiz{% endblock %}
+{% block content %}
+<div class="s_main">
+    <div class="s_box">
+        <h5 class="s_title">Submit Quiz</h5><hr>
+        <h5 class="heading"><strong>Name:</strong> {{ quiz.quiz_title }}</h5>
+        <h5 class="heading"><strong>Description:</strong> {{ quiz.description | safe }}</h5>
+        <h5 class="heading"><strong>Deadline:</strong> {{ quiz.due_date | date:"F d, Y h:i A" }}</h5>
+        <form action="{% url 'submit_quiz' quiz.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <!--Read Only Tags-->
+                <label>Quiz No</label>
+                <input type="text" class="r" value="{{ quiz.quiz_no }}" readonly>
+                <label>Date Added</label>
+                <input type="text" class="r" value="{{ quiz.quiz_created_at | date:"F d, Y h:i A" }}" readonly>
+                <label>Deadline</label>
+                <input type="text" class="r" value="{{ quiz.due_date | date:"F d, Y h:i A" }}" readonly>
+            </div>
+            <label id="q_file" for="quiz_file">Upload Quiz File</label><br>
+            <input type="file" id="quiz_file" name="file" required>
+            <button type="submit" class="file-btn">Submit</button>
+        </form>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

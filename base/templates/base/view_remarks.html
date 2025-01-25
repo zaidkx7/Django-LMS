@@ -1,0 +1,23 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}View Remarks{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Remarks</h2>
+    {% if submission.student == request.user or request.user.is_staff %}
+        <p>{{ submission.remarks | safe }}</p>
+        <a href="{% url 'view_quiz_submissions' submission.quiz.id %}">
+            <button class="sub-label" style="padding: 0px; width: 100px; margin-top: 5px;">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+        </a>
+    {% else %}
+        <p>You are not authorized to view this remarks</p>
+        <a href="{% url 'view_quiz_submissions' submission.quiz.id %}">
+            <button class="sub-label" style="padding: 0px; width: 100px; margin-top: 5px;">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

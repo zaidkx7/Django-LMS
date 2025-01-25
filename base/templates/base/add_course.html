@@ -1,0 +1,39 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Add Course{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 style="text-align: center;"><strong>Add Course</strong></h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="course_title">Course Title</label>
+                            <input type="text" class="form-control" id="course_title" name="course_title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="course_no">Course No</label>
+                            <input type="text" class="form-control" id="course_no" name="course_no" required>
+                        </div>
+                        <button type="submit" class="cstm-btn" style="width: 100%; border-radius: 5px;">Add Course</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}
+    <div id="popup-message-container">
+        {% for message in messages %}
+            <div class="popup-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

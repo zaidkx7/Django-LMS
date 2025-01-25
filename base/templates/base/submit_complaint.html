@@ -1,0 +1,14 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Submit Complaint{% endblock %}
+{% block content %}
+{{ form.media }}
+<div class="container">
+    <h2>Submit Complaint</h2>
+    <form method="POST" action="{% url 'submit_complaint' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="cstm-btn" style="width: 100%;">Submit</button>
+    </form>
+</div>
+{% endblock %}

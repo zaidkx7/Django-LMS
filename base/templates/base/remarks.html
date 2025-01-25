@@ -1,0 +1,14 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}Remarks{% endblock %}
+{% block content %}
+{{ form.media }}
+<div class="container">
+    <h2>Remarks</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="cstm-btn" style="width: 100%;">Submit</button>
+    </form>
+</div>
+{% endblock %}
