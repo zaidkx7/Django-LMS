@@ -19,8 +19,18 @@ This project was initially created as a practice exercise to explore web develop
 - Course creation and management
 - Integrated admin dashboard
 - Database-backed storage using SQLite
+- Quiz management and participation to enhance learning
+- Coding challenges for hands-on practice
+- Exam preparation tools to improve performance
+- Three user categories with different permissions:
+  1. **Super User**: Has no restrictions and can manage the entire platform.
+  2. **Staff User**: Has some restrictions and can perform specific administrative tasks.
+  3. **Ordinary User**: Can upload quizzes and view their marks and rankings.
 
 ---
+
+## Users
+![Screenshot](assets/user_categories.png)
 
 ## Installation Instructions
 
