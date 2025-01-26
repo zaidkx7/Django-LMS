@@ -53,7 +53,7 @@ cd Django-LMS
 ```bash
 pip install virtualenv # to install virtual environment
 python -m venv .venv # to create virtual environment
-source .venv\Scripts\activate  # to activate venv On Windows
+.venv\Scripts\activate  # to activate venv On Windows
 ```
 
 #### 3. Install Dependencies
